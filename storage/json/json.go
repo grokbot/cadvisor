@@ -21,7 +21,6 @@ import (
 	"os"
 
 	info "github.com/google/cadvisor/info/v1"
-	storage "github.com/google/cadvisor/storage"
 )
 
 func init() {
@@ -75,17 +74,17 @@ func (self *jsonStorage) AddStats(ref info.ContainerReference, stats *info.Conta
 	if err != nil {
 		return err
 	}
-	// write json object to udp connection
+	// write json object to tcp/udp connection
 	_, err = self.connection.Write(output)
 	return err
 }
 
 func (driver *jsonStorage) Close() error {
-	return nil
+	return driver.connection.Close()
 }
 
 func newStorage(machineName string, storageHost string, infoField string, protocol string) (*jsonStorage, error) {
-	// create udp connection to host
+	// create tcp/udp connection to host
 	connection, err := net.Dial(protocol, storageHost)
 	if err != nil {
 		return nil, err
