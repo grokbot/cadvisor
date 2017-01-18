@@ -21,6 +21,7 @@ import (
 	"os"
 
 	info "github.com/google/cadvisor/info/v1"
+	storage "github.com/google/cadvisor/storage"
 )
 
 func init() {
